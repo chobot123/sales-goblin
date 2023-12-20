@@ -3,6 +3,8 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { bindCommands } from "./commands";
 import Command, { CommandSymbol } from "./interfaces/command.interface";
+import { authenticateInteraction } from "./middlewares/authentication/authenticate-interaction";
+import { acknowledgeInteraction } from "./middlewares/authentication/acknowledge-interaction";
 
 const app = express();
 const container = new Container();
@@ -15,7 +17,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use("/interacts", )
+/**
+ * Interactions controllers
+ */
+app.use("/interacts", authenticateInteraction, acknowledgeInteraction);
 
 app.listen(PORT, async () => {
     console.log("Listening on port ", PORT);
